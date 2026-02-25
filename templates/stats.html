@@ -1,0 +1,45 @@
+﻿{% extends "base.html" %}
+{% block title %}Статистика{% endblock %}
+{% block content %}
+<div class="header">
+    <h1 class="page-title">Рейтинг игроков</h1>
+</div>
+
+<div class="card" style="margin-bottom:25px; cursor:default;">
+    <h2 style="color:var(--accent); margin-bottom:15px;">Твои показатели</h2>
+    <div class="stats-grid">
+        <div class="stat-box">
+            <span class="stat-value">{{ user.level }}</span>
+            <span class="stat-label">Уровень</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-value">{{ user.xp }}</span>
+            <span class="stat-label">XP</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-value">{{ user.balance }}</span>
+            <span class="stat-label">Монеты</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-value">{{ user.streak }}</span>
+            <span class="stat-label">Дней подряд</span>
+        </div>
+    </div>
+</div>
+
+<h2 style="margin-bottom:15px; font-size:18px;"> Топ-10</h2>
+<div class="card" style="cursor:default; padding:0;">
+    {% for p in top %}
+    <div class="leaderboard-row" style="{{ 'background:rgba(0,255,136,0.05);' if p.telegram_id == session.get('user_id') else '' }}">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <span class="rank">#{{ loop.index }}</span>
+            <div style="width:30px; height:30px; background:#444; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold;">
+                {{ p.first_name[0] }}
+            </div>
+            <span style="font-weight:500;">{{ p.first_name }}</span>
+        </div>
+        <span style="font-weight:bold; color:var(--accent);">{{ p.xp }} XP</span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

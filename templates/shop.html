@@ -1,0 +1,28 @@
+﻿{% extends "base.html" %}
+{% block title %}Магазин{% endblock %}
+{% block content %}
+<div class="header">
+    <h1 class="page-title">Магазин</h1>
+    <div style="font-size:18px; font-weight:bold; color:var(--accent);"> {{ user.balance }}</div>
+</div>
+
+{% for item in items %}
+<div class="shop-item">
+    <div class="shop-icon">{{ item.icon }}</div>
+    <div class="shop-info">
+        <div class="shop-name">{{ item.name }}</div>
+        <div class="shop-desc">{{ item.desc }}</div>
+        <span class="shop-price">{{ item.price }} монет</span>
+    </div>
+    <div style="width:90px;">
+        {% if item.bought %}
+            <button class="btn" disabled style="padding:8px; font-size:12px;">Куплено</button>
+        {% elif item.can_buy %}
+            <button class="btn" onclick="buyItem({{ item.id }})" style="padding:8px; font-size:12px;">Купить</button>
+        {% else %}
+            <button class="btn" disabled style="padding:8px; font-size:12px; background:#444;">Нет </button>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

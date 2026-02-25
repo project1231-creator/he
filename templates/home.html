@@ -1,0 +1,58 @@
+﻿{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<div class="header">
+    <h1 class="page-title">Привет, {{ user.first_name }}!</h1>
+    <div class="balance-badge"> {{ user.balance }}</div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-box">
+        <span class="stat-value">{{ user.level }}</span>
+        <span class="stat-label">Уровень</span>
+    </div>
+    <div class="stat-box">
+        <span class="stat-value">{{ user.xp }}</span>
+        <span class="stat-label">XP</span>
+    </div>
+    <div class="stat-box">
+        <span class="stat-value">{{ user.streak }}</span>
+        <span class="stat-label">Серия (дн)</span>
+    </div>
+    <div class="stat-box">
+        <span class="stat-value"></span>
+        <span class="stat-label">В игре</span>
+    </div>
+</div>
+
+<div class="card" style="border-left: 4px solid var(--accent); cursor: default;">
+    <h2 class="card-title">Твой путь</h2>
+    <p class="card-desc" style="margin-bottom:0;">
+        Читай статьи из библиотеки, выполняй привычки и покупай бустеры в магазине. 
+        Твой прогресс сохраняется автоматически!
+    </p>
+</div>
+
+<h2 style="margin: 25px 0 15px; font-size: 20px;">Быстрый доступ</h2>
+<div class="card" onclick="location.href='/library'" style="display:flex; align-items:center; gap:15px;">
+    <div style="font-size:32px;"></div>
+    <div>
+        <div class="card-title" style="margin-bottom:2px;">Библиотека</div>
+        <div class="card-desc" style="margin-bottom:0; font-size:12px;">Читать статьи и получать XP</div>
+    </div>
+</div>
+<div class="card" onclick="location.href='/shop'" style="display:flex; align-items:center; gap:15px;">
+    <div style="font-size:32px;"></div>
+    <div>
+        <div class="card-title" style="margin-bottom:2px;">Магазин</div>
+        <div class="card-desc" style="margin-bottom:0; font-size:12px;">Тратить монеты на бустеры</div>
+    </div>
+</div>
+<div class="card" onclick="location.href='/stats'" style="display:flex; align-items:center; gap:15px;">
+    <div style="font-size:32px;"></div>
+    <div>
+        <div class="card-title" style="margin-bottom:2px;">Рейтинг</div>
+        <div class="card-desc" style="margin-bottom:0; font-size:12px;">Сравни себя с другими</div>
+    </div>
+</div>
+{% endblock %}

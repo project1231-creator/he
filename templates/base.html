@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HabitMaster Pro - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+    </script>
+</head>
+<body>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <nav class="nav-bar">
+        <a href="/home" class="nav-item {{ 'active' if request.endpoint == 'home' else '' }}">
+            <span class="nav-icon"></span><span>Главная</span>
+        </a>
+        <a href="/library" class="nav-item {{ 'active' if request.endpoint == 'library' else '' }}">
+            <span class="nav-icon"></span><span>Библиотека</span>
+        </a>
+        <a href="/shop" class="nav-item {{ 'active' if request.endpoint == 'shop' else '' }}">
+            <span class="nav-icon"></span><span>Магазин</span>
+        </a>
+        <a href="/stats" class="nav-item {{ 'active' if request.endpoint == 'stats' else '' }}">
+            <span class="nav-icon"></span><span>Топ</span>
+        </a>
+        <a href="/profile" class="nav-item {{ 'active' if request.endpoint == 'profile' else '' }}">
+            <span class="nav-icon"></span><span>Профиль</span>
+        </a>
+    </nav>
+
+    <!-- Модальное окно для статей -->
+    <div class="modal" id="articleModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()"></button>
+            <h2 id="modalTitle" style="color:var(--accent); margin-bottom:5px;"></h2>
+            <div id="modalMeta" style="font-size:12px; color:#888; margin-bottom:15px;"></div>
+            <div id="modalText" class="modal-text"></div>
+            <button class="btn" id="markReadBtn" onclick="markRead()" style="margin-top:20px;">Отметить прочитанным (+10 XP)</button>
+        </div>
+    </div>
+
+    <script>
+        let currentArticleId = null;
+        function openArticle(id, title, time, content, isRead) {
+            currentArticleId = id;
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMeta').innerText = ' ' + time;
+            document.getElementById('modalText').innerText = content;
+            const btn = document.getElementById('markReadBtn');
+            if(isRead) {
+                btn.disabled = true; 
+                btn.innerText = ' Уже прочитано'; 
+                btn.style.background = '#444';
+            } else {
+                btn.disabled = false; 
+                btn.innerText = 'Отметить прочитанным (+10 XP)'; 
+                btn.style.background = 'var(--accent)';
+            }
+            document.getElementById('articleModal').classList.add('open');
+        }
+        function closeModal() { 
+            document.getElementById('articleModal').classList.remove('open'); 
+        }
+        async function markRead() {
+            if(!currentArticleId) return;
+            const res = await fetch('/api/read/' + currentArticleId, {method: 'POST'});
+            const data = await res.json();
+            if(data.ok) { 
+                alert('Статья прочитана! +10 XP, +5 монет'); 
+                location.reload(); 
+            }
+        }
+        async function buyItem(id) {
+            if(!confirm('Купить этот предмет?')) return;
+            const res = await fetch('/api/buy/' + id, {method: 'POST'});
+            const data = await res.json();
+            if(data.ok) { 
+                alert(data.msg || 'Покупка успешна!'); 
+                location.reload(); 
+            } else { 
+                alert('Ошибка: ' + (data.error || 'Недостаточно средств')); 
+            }
+        }
+    </script>
+</body>
+</html>

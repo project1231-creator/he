@@ -1,0 +1,33 @@
+﻿{% extends "base.html" %}
+{% block title %}Библиотека{% endblock %}
+{% block content %}
+<div class="header">
+    <h1 class="page-title">Библиотека</h1>
+    <div style="font-size:14px; color:var(--text-secondary);">Прочитано: {{ read_count }}/{{ total }}</div>
+</div>
+
+{% for cat, articles in categories.items() %}
+<div style="margin-bottom:25px;">
+    <h2 style="color:var(--accent); font-size:18px; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+        <span></span> {{ cat }}
+    </h2>
+    {% for art in articles %}
+    <div class="card" onclick="openArticle({{ art.id }}, '{{ art.title }}', '{{ art.read_time }}', '{{ art.content|replace("'", "\\'")|replace('\n', '\\n') }}', {{ 'true' if art.is_read else 'false' }})" style="flex-direction:row; align-items:center; gap:15px; padding:15px;">
+        <div style="font-size:24px; width:40px; text-align:center;">{{ '' if art.is_read else '' }}</div>
+        <div style="flex:1;">
+            <div class="card-title" style="margin-bottom:4px; font-size:16px;">{{ art.title }}</div>
+            <div class="card-desc" style="margin-bottom:0; font-size:13px; display:-webkit-box; -webkit-line-clamp:1; overflow:hidden;">
+                {{ art.content[:100] }}...
+            </div>
+            <div class="card-meta" style="border:none; padding:0; margin-top:6px;">
+                <span>{{ art.read_time }}</span>
+                <span style="color:{{ 'var(--accent)' if art.is_read else 'var(--text-secondary)' }}">
+                    {{ ' Прочитано' if art.is_read else 'Читать ' }}
+                </span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}

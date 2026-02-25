@@ -1,0 +1,36 @@
+﻿{% extends "base.html" %}
+{% block title %}Профиль{% endblock %}
+{% block content %}
+<div class="profile-header">
+    <div class="avatar-large">
+        {% if user.photo_url %}
+            <img src="{{ user.photo_url }}" alt="Avatar">
+        {% else %}
+            {{ user.first_name[0] }}
+        {% endif %}
+    </div>
+    <h2 style="margin-bottom:5px;">{{ user.first_name }}</h2>
+    <p style="color:var(--text-secondary); margin-bottom:5px;">@{{ user.username or 'anon' }}</p>
+    <p style="color:#666; font-size:12px;">ID: {{ user.telegram_id }}</p>
+</div>
+
+<div class="stats-grid" style="margin-top:20px;">
+    <div class="stat-box">
+        <span class="stat-value">{{ earned_ach }}/{{ total_ach }}</span>
+        <span class="stat-label">Достижения</span>
+    </div>
+    <div class="stat-box">
+        <span class="stat-value">{{ user.streak }}</span>
+        <span class="stat-label">Дней подряд</span>
+    </div>
+</div>
+
+<div class="card" style="margin-top:25px; cursor:default;">
+    <h2 style="margin-bottom:10px;">О проекте</h2>
+    <p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">
+        HabitMaster Pro  твой карманный тренер по саморазвитию. 
+        Основано на лучших практиках из книг и личного опыта.
+        Читай, развивайся, побеждай!
+    </p>
+</div>
+{% endblock %}
